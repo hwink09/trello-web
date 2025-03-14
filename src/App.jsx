@@ -4,9 +4,32 @@ import AccessAlarm from "@mui/icons-material/AccessAlarm";
 import HomeIcon from "@mui/icons-material/Home";
 import { pink } from "@mui/material/colors";
 
+import {
+  Experimental_CssVarsProvider as CssVarsProvider,
+  experimental_extendTheme as extendTheme,
+  useColorScheme,
+} from "@mui/material/styles";
+
+function ModeToggle() {
+  const { mode, setMode } = useColorScheme();
+  return (
+    <Button
+      onClick={() => {
+        setMode(mode === "light" ? "dark" : "light");
+        // localStorage.setItem("trello-dark-light-mode");
+        // localStorage.getItem("trello-dark-light-mode");
+      }}
+    >
+      {mode === "light" ? "turn Dark" : "turn Light"}
+    </Button>
+  );
+}
+
 function App() {
   return (
     <>
+      <ModeToggle />
+      <br />
       <div>hwink</div>
       <Button variant="text">Text</Button>
       <Button variant="contained">Contained</Button>
