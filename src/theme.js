@@ -24,37 +24,54 @@ const theme = extexTheme(
     },
 
     components: {
-      MuiButton: {
+      MuiCssBaseline: {
         styleOverrides: {
-          root: {
-            textTransform: "none",
+          body: {
+            "*::-webkit-scrollbar": {
+              width: "8px",
+              height: "8px",
+            },
+            "*::-webkit-scrollbar-thumb": {
+              backgroundColor: "#bdc3c7",
+              borderRadius: "10px",
+            },
+            "*::-webkit-scrollbar-thumb:hover": {
+              backgroundColor: "#00b894",
+            },
           },
         },
       },
-      MuiInputLabel: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            color: "theme.palette.primary.main",
-            fontSize: "0.875 rem",
-          }),
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: "none",
         },
       },
-      MuiOutlinedInput: {
-        styleOverrides: {
-          root: ({ theme }) => ({
-            color: theme.palette.primary.main,
-            fontSize: "0.975rem",
-            ".MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.light,
-            },
-            "&:hover .MuiOutlinedInput-notchedOutline": {
-              borderColor: theme.palette.primary.main,
-            },
-            "& fieldset": {
-              borderWidth: "1px !important",
-            },
-          }),
-        },
+    },
+    MuiInputLabel: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: "theme.palette.primary.main",
+          fontSize: "0.875 rem",
+        }),
+      },
+    },
+    MuiOutlinedInput: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          color: theme.palette.primary.main,
+          fontSize: "0.975rem",
+          ".MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.primary.light,
+          },
+          "&:hover .MuiOutlinedInput-notchedOutline": {
+            borderColor: theme.palette.primary.main,
+          },
+          "& fieldset": {
+            borderWidth: "1px !important",
+          },
+        }),
       },
     },
   }
