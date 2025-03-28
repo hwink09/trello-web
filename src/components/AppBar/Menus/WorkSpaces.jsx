@@ -11,6 +11,7 @@ import ContentCopy from "@mui/icons-material/ContentCopy";
 import ContentPaste from "@mui/icons-material/ContentPaste";
 import Cloud from "@mui/icons-material/Cloud";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import Box from "@mui/material/Box";
 
 function WorkSpaces() {
   const [anchorEl, setAnchorEl] = useState(null);
@@ -22,7 +23,7 @@ function WorkSpaces() {
     setAnchorEl(null);
   };
   return (
-    <div>
+    <Box>
       <Button
         sx={{ color: "white" }}
         id="basic-button-workspaces"
@@ -78,7 +79,7 @@ function WorkSpaces() {
           <ListItemText>Web Clipboard</ListItemText>
         </MenuItem>
       </Menu>
-    </div>
+    </Box>
   );
 }
 
