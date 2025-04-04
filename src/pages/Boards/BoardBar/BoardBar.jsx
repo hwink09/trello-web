@@ -1,5 +1,4 @@
 import Box from "@mui/material/Box";
-
 import Chip from "@mui/material/Chip";
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import VpnLockIcon from "@mui/icons-material/VpnLock";
@@ -12,6 +11,7 @@ import Tooltip from "@mui/material/Tooltip";
 import Button from "@mui/material/Button";
 import PersonAddIcon from "@mui/icons-material/PersonAdd";
 import { capitalizeFirstLetter } from "~/utils/formatters";
+
 const MENU_STYLES = {
   color: "white",
   bgcolor: "transparent",
