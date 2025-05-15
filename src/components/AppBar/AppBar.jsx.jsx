@@ -54,7 +54,7 @@ function AppBar() {
               fontWeight: "Bold",
               color: "white",
             }}
-          >
+          >c
             Trello
           </Typography>
 
