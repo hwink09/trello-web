@@ -29,7 +29,7 @@ export const mockData = {
             title: "Title of card 01",
             description: "Markdown Syntax (sẽ ở khóa nâng cao nhé)",
             cover:
-              "https://danviet.mediacdn.vn/upload/4-2014/images/2014-11-29/1434412206-fipl1_epvj.jpg",
+              "https://facebook.com/photo/?fbid=1812310882953302&set=a.130748564442884",
             memberIds: ["test-user-id-01"],
             comments: ["test comment 01", "test comment 02"],
             attachments: [

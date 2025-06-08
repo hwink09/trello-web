@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 
 import Box from "@mui/material/Box";
 import ListColumns from "./ListColumns/ListColumns";
@@ -13,13 +13,17 @@ import {
   DragOverlay,
   defaultDropAnimationSideEffects,
   closestCorners,
+  closestCenter,
+  rectIntersection,
+  getFirstCollision,
+  pointerWithin,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
 import { cloneDeep } from "lodash";
 
 import Column from "./ListColumns/Column/Column";
 import Card from "./ListColumns/Column/ListCards/Card/Card";
-import { CopyAll } from "@mui/icons-material";
+import { use } from "react";
 
 const ACTIVE_DRAGITEM_TYPE = {
   COLUMN: "ACTIVE_DRAGITEM_TYPE_COLUMN",
@@ -49,6 +53,9 @@ function BoardContent({ board }) {
   const [activeDragItemData, setActiveDragItemData] = useState(null);
   const [oldColumnWhenDraggingCard, setOldColumnWhenDraggingCard] =
     useState(null);
+
+  // Điểm va chạm cuối cùng của phần tử đang kéo
+  const lastOverId = useRef(null);
 
   useEffect(() => {
     if (board?.columns && board?.columnOrderIds) {
@@ -278,10 +285,53 @@ function BoardContent({ board }) {
     }),
   };
 
+  // args: arguments = các đối số, tham số
+  const collisionDetectionStrategy = useCallback(
+    (args) => {
+      if (activeDragItemType === ACTIVE_DRAGITEM_TYPE.COLUMN) {
+        return closestCorners(...args);
+      }
+
+      const poiterIntersection = pointerWithin(args);
+      const intersections =
+        poiterIntersection?.length > 0
+          ? poiterIntersection
+          : rectIntersection(args);
+
+      // Tìm over ID đầu tiên trong các va chạm (intersections)
+      let overID = getFirstCollision(intersections, "id");
+      if (overID) {
+        const checkColumn = orderedColumns.find((c) => c._id === overID);
+        if (checkColumn) {
+          overID = closestCenter({
+            ...args,
+            droppableContainers: args.droppableContainers.filter(
+              (container) => {
+                return (
+                  container.id !== overID &&
+                  checkColumn?.cardOrderIds?.includes(container.id)
+                );
+              }
+            )[0]?.id,
+          });
+        }
+
+        lastOverId.current = overID;
+        return [{ id: overID }];
+      }
+      return lastOverId.current ? [{ id: lastOverId.current }] : [];
+    },
+    [activeDragItemType, orderedColumns]
+  );
+
   return (
     <DndContext
       sensors={sensors}
-      collisionDetection={closestCorners} //Thuật toán phát hiện va chạm
+      // Update: nếu chỉ dùng closestCorners sẽ có bug flickering + sai lệch dữ liệu
+      //collisionDetection={closestCorners} //Thuật toán phát hiện va chạm
+
+      // tự custom collisionDetectionStrategy để tránh lỗi flickering
+      collisionDetection={collisionDetectionStrategy}
       onDragStart={handleDragStart}
       onDragOver={handleDragOver}
       onDragEnd={handleDragEnd}
