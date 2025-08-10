@@ -13,13 +13,12 @@ import {
   DragOverlay,
   defaultDropAnimationSideEffects,
   closestCorners,
-  closestCenter,
-  rectIntersection,
   getFirstCollision,
   pointerWithin,
 } from "@dnd-kit/core";
 import { arrayMove } from "@dnd-kit/sortable";
-import { cloneDeep } from "lodash";
+import { cloneDeep, isEmpty } from "lodash";
+import { generatePlaceholderCard } from "~/utils/formatters";
 
 import Column from "./ListColumns/Column/Column";
 import Card from "./ListColumns/Column/ListCards/Card/Card";
@@ -90,8 +89,8 @@ function BoardContent({ board }) {
       let newCardIndex;
 
       const isBelowOverItem =
-        active.rect.current.translate &&
-        active.rect.current.translate.top > over.rect.top + over.rect.height;
+        active.rect.current.translated &&
+        active.rect.current.translated.top > over.rect.top + over.rect.height;
 
       const modifier = isBelowOverItem ? 1 : 0;
       newCardIndex =
@@ -113,6 +112,17 @@ function BoardContent({ board }) {
         nextActiveColumn.cards = nextActiveColumn.cards.filter(
           (card) => card._id !== activeDraggingCardId
         );
+
+        // Thêm Placeholder Card nếu column rỗng: Bị kéo hết card đi, không còn cái card nào
+        if (isEmpty(nextActiveColumn.cards)) {
+          nextActiveColumn.cards = [generatePlaceholderCard(nextActiveColumn)];
+        }
+
+        // Xóa placeholder card đi nếu nó đang tồn tại
+        nextOverColumn.cards = nextOverColumn.cards.filter(
+          (card) => !card.FE_PlaceholderCard
+        );
+
         // Cập nhật lại cardOrderIds cho chuẩn dữ liệu
         nextActiveColumn.cardOrderIds = nextActiveColumn.cards.map(
           (card) => card._id
@@ -196,11 +206,13 @@ function BoardContent({ board }) {
     // Đây đang là đoạn xử lí lúc kéo (handleDragOver), còn xử lí lúc kéo xong xuôi thì nó là vấn đề ở handleDragEnd
     if (activeColumn._id !== overColumn._id) {
       moveCardBetweenDifferentColumns(
-        activeDraggingCardId,
-        activeDraggingCardData,
         overColumn,
         overCardId,
-        activeColumn
+        active,
+        over,
+        activeColumn,
+        activeDraggingCardId,
+        activeDraggingCardData
       );
     }
   };
@@ -233,11 +245,13 @@ function BoardContent({ board }) {
       if (oldColumnWhenDraggingCard._id !== overColumn._id) {
         //Hành động kéo thả card qua 2 column khác nhau
         moveCardBetweenDifferentColumns(
-          activeDraggingCardId,
-          activeDraggingCardData,
           overColumn,
           overCardId,
-          activeColumn
+          active,
+          over,
+          activeColumn,
+          activeDraggingCardId,
+          activeDraggingCardData
         );
       } else {
         //Hành động kéo thả card trong cùng một column
@@ -324,21 +338,26 @@ function BoardContent({ board }) {
   const collisionDetectionStrategy = useCallback(
     (args) => {
       if (activeDragItemType === ACTIVE_DRAGITEM_TYPE.COLUMN) {
-        return closestCorners(...args);
+        return closestCorners({ ...args });
       }
 
-      const poiterIntersection = pointerWithin(args);
-      const intersections =
-        poiterIntersection?.length > 0
-          ? poiterIntersection
-          : rectIntersection(args);
+      const pointerIntersection = pointerWithin(args);
+
+      // nếu pointerIntersection là mảng rỗng, return luôn không cần làm gì cả
+      if (!pointerIntersection?.length) return;
+
+      // Thuật toán phát hiện va chạm sẽ trả về một mảng các va chạm ở đây (ko cần bước này nữa)
+      // const intersections =
+      //   pointerIntersection?.length > 0
+      //     ? pointerIntersection
+      //     : rectIntersection(args);
 
       // Tìm over ID đầu tiên trong các va chạm (intersections)
-      let overID = getFirstCollision(intersections, "id");
+      let overID = getFirstCollision(pointerIntersection, "id");
       if (overID) {
         const checkColumn = orderedColumns.find((c) => c._id === overID);
         if (checkColumn) {
-          overID = closestCenter({
+          overID = closestCorners({
             ...args,
             droppableContainers: args.droppableContainers.filter(
               (container) => {
@@ -347,8 +366,8 @@ function BoardContent({ board }) {
                   checkColumn?.cardOrderIds?.includes(container.id)
                 );
               }
-            )[0]?.id,
-          });
+            ),
+          })[0]?.id;
         }
 
         lastOverId.current = overID;
