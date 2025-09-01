@@ -51,7 +51,19 @@ function Column({ column }) {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
+  // const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
+
+  // ép kiểu ObjectId về string
+  const normalizeId = (v) => (typeof v === "string" ? v : v?.toString?.() ?? v);
+
+  const cards =
+    column?.cards?.map((c) => ({ ...c, _id: normalizeId(c._id) })) ?? [];
+  const cardOrderIds = (column?.cardOrderIds ?? []).map(normalizeId);
+
+  // Nếu có cardOrderIds thì sắp xếp, còn không thì lấy nguyên danh sách cards
+  const orderedCards = cardOrderIds.length
+    ? mapOrder(cards, cardOrderIds, "_id")
+    : cards;
 
   // Phải bọc div ở đây vì vấn đề chiều cao của column khi kéo thả sẽ có bug kiểu kiểu flickering
   return (
