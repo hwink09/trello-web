@@ -4,6 +4,7 @@ import AppBar from "~/components/AppBar/AppBar.jsx";
 import BoardBar from "./BoardBar/BoardBar";
 import BoxContent from "./BoardContent/BoardContent";
 import { fetchBoardDetailsAPI } from "~/apis";
+import { mockData } from "~/apis/mock-data";
 
 function Board() {
   const [board, setBoard] = useState(null);
@@ -19,8 +20,8 @@ function Board() {
   return (
     <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
       <AppBar />
-      <BoardBar board={board} />
-      <BoxContent board={board} />
+      <BoardBar board={mockData.board} />
+      <BoxContent board={mockData.board} />
     </Container>
   );
 }
