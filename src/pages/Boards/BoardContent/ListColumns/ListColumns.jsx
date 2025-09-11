@@ -13,21 +13,29 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-function ListColumns({ columns }) {
+function ListColumns({ columns, createNewColumn, createNewCard }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
 
   const toggleOpenNewColumnForm = () =>
     setOpenNewColumnForm(!openNewColumnForm);
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle) {
       toast.error("Please Enter Column Title!");
       return;
     }
-    // console.log(newColumnTitle);
-    // Gọi API ở đây
 
+    // Tạo dữ liệu Column để gọi API
+    const newColumnData = {
+      title: newColumnTitle,
+    };
+
+    /**
+     * Gọi lên props func createNewColumn nằm ở component cha cao nhất (boards/_id.jsx)
+     * Sau này có Redux Global Store thì có thể gọi luôn API ở đây là được không cần phải gọi ngược lên
+     */
+    await createNewColumn(newColumnData);
     // Đóng lại trạng thái thêm Column và clear input
     toggleOpenNewColumnForm();
     setNewColumnTitle("");
@@ -56,7 +64,11 @@ function ListColumns({ columns }) {
         }}
       >
         {columns?.map((column) => (
-          <Column key={column._id} column={column} />
+          <Column
+            key={column._id}
+            column={column}
+            createNewCard={createNewCard}
+          />
         ))}
         {/* Box add new column CTA */}\
         {!openNewColumnForm ? (

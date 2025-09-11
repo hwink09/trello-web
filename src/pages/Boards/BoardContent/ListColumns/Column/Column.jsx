@@ -26,19 +26,25 @@ import { mapOrder } from "~/utils/sorts";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
 
-function Column({ column }) {
+function Column({ column, createNewCard }) {
   const [openNewCardForm, setOpenNewCardForm] = useState(false);
   const [newCardTitle, setNewCardTitle] = useState("");
 
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
 
-  const addNewCard = () => {
+  const addNewCard = async () => {
     if (!newCardTitle) {
       toast.error("Please Enter Card Title!");
       return;
     }
-    // console.log(newCardTitle);
-    // Gọi API ở đây
+
+    // Tạo dữ liệu Card để gọi API
+    const newCardData = {
+      title: newCardTitle,
+      columnId: column._id,
+    };
+
+    await createNewCard(newCardData);
 
     // Đóng lại trạng thái thêm Card và clear input
     toggleOpenNewCardForm();
