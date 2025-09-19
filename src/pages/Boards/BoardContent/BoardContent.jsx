@@ -35,6 +35,7 @@ function BoardContent({
   createNewCard,
   moveColumns,
   moveCardInTheSameColumn,
+  moveCardToDifferentColumn,
 }) {
   // https://docs.dndkit.com/api-documentation/sensors
 
@@ -74,7 +75,7 @@ function BoardContent({
     );
   };
 
-  // Function chung xử lí việc cập nhật lại state trong trường hợp di chuyển card giữa các column khác nhau
+  // Khởi tạo Function chung xử lí việc cập nhật lại state trong trường hợp di chuyển card giữa các column khác nhau
   const moveCardBetweenDifferentColumns = (
     overColumn,
     overCardId,
@@ -82,7 +83,8 @@ function BoardContent({
     over,
     activeColumn,
     activeDraggingCardId,
-    activeDraggingCardData
+    activeDraggingCardData,
+    triggerFrom
   ) => {
     setOrderedColumns((prevColumns) => {
       // Tìm vị trí (index) của overCard trong column đích (nơi card sắp được nhả )
@@ -163,6 +165,17 @@ function BoardContent({
         );
       }
 
+      // Nếu func này được gọi từ handleDragEnd nghĩa là đã kéo thả xong, lúc này mới xử lí gọi API 1 lần ở đây
+      if (triggerFrom === "handleDragEnd") {
+        // Phải dùng tới activeDragItemData.columnId hoặc tốt nhất là oldColumnWhenDraggingCard._id (set vài state từ bước handleDragStart) chứ không phải activeData trong scope handleDragEnd này vì sau khi đi qua onDragOver và tới đây là state của các đã bị cập nhật một lần rồi.
+        moveCardToDifferentColumn(
+          activeDraggingCardId,
+          oldColumnWhenDraggingCard._id,
+          nextOverColumn._id,
+          nextColumns
+        );
+      }
+
       return nextColumns;
     });
   };
@@ -217,7 +230,8 @@ function BoardContent({
         over,
         activeColumn,
         activeDraggingCardId,
-        activeDraggingCardData
+        activeDraggingCardData,
+        "handleDragOver"
       );
     }
   };
@@ -256,7 +270,8 @@ function BoardContent({
           over,
           activeColumn,
           activeDraggingCardId,
-          activeDraggingCardData
+          activeDraggingCardData,
+          "handleDragEnd"
         );
       } else {
         //Hành động kéo thả card trong cùng một column
