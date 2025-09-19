@@ -21,7 +21,6 @@ import AddCardIcon from "@mui/icons-material/AddCard";
 import CloseIcon from "@mui/icons-material/Close";
 import DragHandleIcon from "@mui/icons-material/DragHandle";
 import ListCards from "./ListCards/ListCards";
-import { mapOrder } from "~/utils/sorts";
 
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
@@ -32,7 +31,7 @@ function Column({ column, createNewCard }) {
 
   const toggleOpenNewCardForm = () => setOpenNewCardForm(!openNewCardForm);
 
-  const addNewCard = async () => {
+  const addNewCard = () => {
     if (!newCardTitle) {
       toast.error("Please Enter Card Title!");
       return;
@@ -44,7 +43,7 @@ function Column({ column, createNewCard }) {
       columnId: column._id,
     };
 
-    await createNewCard(newCardData);
+    createNewCard(newCardData);
 
     // Đóng lại trạng thái thêm Card và clear input
     toggleOpenNewCardForm();
@@ -79,20 +78,7 @@ function Column({ column, createNewCard }) {
   const handleClick = (event) => setAnchorEl(event.currentTarget);
   const handleClose = () => setAnchorEl(null);
 
-  // const orderedCards = mapOrder(column?.cards, column?.cardOrderIds, "_id");
-
-  // ép kiểu ObjectId về string
-  const normalizeId = (v) => (typeof v === "string" ? v : v?.toString?.() ?? v);
-
-  const cards =
-    column?.cards?.map((c) => ({ ...c, _id: normalizeId(c._id) })) ?? [];
-  const cardOrderIds = (column?.cardOrderIds ?? []).map(normalizeId);
-
-  // Nếu có cardOrderIds thì sắp xếp, còn không thì lấy nguyên danh sách cards
-  const orderedCards = cardOrderIds.length
-    ? mapOrder(cards, cardOrderIds, "_id")
-    : cards;
-
+  const orderedCards = column.cards;
   // Phải bọc div ở đây vì vấn đề chiều cao của column khi kéo thả sẽ có bug kiểu kiểu flickering
   return (
     <div ref={setNodeRef} style={dndKitColumnStyles} {...attributes}>
