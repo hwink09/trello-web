@@ -30,7 +30,7 @@ const ACTIVE_DRAGITEM_TYPE = {
   COLUMN: "ACTIVE_DRAGITEM_TYPE_COLUMN",
   CARD: "ACTIVE_DRAGITEM_TYPE_CARD",
 };
-function BoardContent({ board, createNewColumn, createNewCard }) {
+function BoardContent({ board, createNewColumn, createNewCard, moveColumns }) {
   // https://docs.dndkit.com/api-documentation/sensors
 
   // const pointerSensor = useSensor(PointerSensor, {
@@ -312,11 +312,11 @@ function BoardContent({ board, createNewColumn, createNewCard }) {
           oldColumnIndex,
           newColumnIndex
         );
-        // 2 cái clg dữ liệu này sau dùng để xử lí gọi API
-        // const dndOrderedColumnsIds = dndOrderedColumns?.map((c) => c._id);
-        // console.log("dndOrderedColumns", dndOrderedColumns);
-        // console.log("dndOrderedColumnsIds", dndOrderedColumnsIds);
 
+        // Gọi props func moveColumns nằm ở component cha cao nhất (board/_id.jsx
+        moveColumns(dndOrderedColumns);
+
+        // vẫn gọi update State ở đây để tránh delay hoặc Flickering giao diện lúc kéo thả cần phải chờ gọi API (small trick)
         setOrderedColumns(dndOrderedColumns);
       }
     }
