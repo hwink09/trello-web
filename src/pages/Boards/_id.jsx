@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
+
 import Container from "@mui/material/Container";
 import AppBar from "~/components/AppBar/AppBar.jsx";
 import BoardBar from "./BoardBar/BoardBar";
@@ -15,6 +17,7 @@ import {
   updateBoardDetailsAPI,
   updateColumnDetailsAPI,
   moveCardToDifferentColumnAPI,
+  deleteColumnDetailsAPI,
 } from "~/apis";
 import { generatePlaceholderCard } from "~/utils/formatters";
 import { isEmpty } from "lodash";
@@ -155,7 +158,7 @@ function Board() {
       (c) => c._id === prevColumnId
     )?.cardOrderIds;
     // Xử lí vấn đề khi kéo card cuối cùng ra khỏi column, column rỗng sẽ có placeholder-card, cần xóa nó đi trước khi gửi cho BE
-    if (prevCardOrderIds[0].incldes("placeholder-card")) prevCardOrderIds = [];
+    if (prevCardOrderIds[0].includes("placeholder-card")) prevCardOrderIds = [];
 
     moveCardToDifferentColumnAPI({
       currentCardId,
@@ -164,6 +167,22 @@ function Board() {
       nextColumnId,
       nextCardOrderIds: dndOrderedColumns.find((c) => c._id === nextColumnId)
         ?.cardOrderIds,
+    });
+  };
+
+  // Xử lí xóa một Col và Card bên trong nó
+  const deleteColDetails = (columnId) => {
+    // update cho chuẩn dữ liệu state board
+    const newBoard = { ...board };
+    newBoard.columns = newBoard.columns.filter((c) => c._id !== columnId);
+    newBoard.columnOrderIds = newBoard.columnOrderIds.filter(
+      (_id) => _id !== columnId
+    );
+    setBoard(newBoard);
+
+    // Gọi API xử lí phía BE
+    deleteColumnDetailsAPI(columnId).then((res) => {
+      toast.success(res?.deleteResult);
     });
   };
 
@@ -196,6 +215,7 @@ function Board() {
         moveColumns={moveColumns}
         moveCardInTheSameColumn={moveCardInTheSameColumn}
         moveCardToDifferentColumn={moveCardToDifferentColumn}
+        deleteColDetails={deleteColDetails}
       />
     </Container>
   );
