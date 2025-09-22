@@ -13,7 +13,12 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-function ListColumns({ columns, createNewColumn, createNewCard }) {
+function ListColumns({
+  columns,
+  createNewColumn,
+  createNewCard,
+  deleteColDetails,
+}) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
 
@@ -68,6 +73,7 @@ function ListColumns({ columns, createNewColumn, createNewCard }) {
             key={column._id}
             column={column}
             createNewCard={createNewCard}
+            deleteColDetails={deleteColDetails}
           />
         ))}
         {/* Box add new column CTA */}\
