@@ -38,29 +38,29 @@ export const activeBoardSlice = createSlice({
       // Update lại dữ liệu của currentActiveBoard
       state.currentActiveBoard = board;
     },
-    // ExtraReducers: Nơi xử lý dữ liệu bất đồng bộ
-    extraReducers: (builder) => {
-      builder.addCase(fetchBoardDetailsAPI.fulfilled, (state, action) => {
-        // action.payload ở đây là res.data trả về ở trên
-        let board = action.payload;
+  },
+  // ExtraReducers: Nơi xử lý dữ liệu bất đồng bộ
+  extraReducers: (builder) => {
+    builder.addCase(fetchBoardDetailsAPI.fulfilled, (state, action) => {
+      // action.payload ở đây là res.data trả về ở trên
+      let board = action.payload;
 
-        // Sắp xếp thứ tự các column ở đây luôn trước khi đưa xuống bên dưới
-        board.columns = mapOrder(board.columns, board.columnOrderIds, "_id");
+      // Sắp xếp thứ tự các column ở đây luôn trước khi đưa xuống bên dưới
+      board.columns = mapOrder(board.columns, board.columnOrderIds, "_id");
 
-        // xử lí vấn đề kéo vào một column rỗng
-        board.columns.forEach((column) => {
-          if (isEmpty(column.cards)) {
-            column.cards = [generatePlaceholderCard(column)];
-            column.cardOrderIds = [generatePlaceholderCard(column)._id];
-          } else {
-            column.cards = mapOrder(column.cards, column.cardOrderIds, "_id");
-          }
-        });
-
-        // Update lại dữ liệu của currentActiveBoard
-        state.currentActiveBoard = board;
+      // xử lí vấn đề kéo vào một column rỗng
+      board.columns.forEach((column) => {
+        if (isEmpty(column.cards)) {
+          column.cards = [generatePlaceholderCard(column)];
+          column.cardOrderIds = [generatePlaceholderCard(column)._id];
+        } else {
+          column.cards = mapOrder(column.cards, column.cardOrderIds, "_id");
+        }
       });
-    },
+
+      // Update lại dữ liệu của currentActiveBoard
+      state.currentActiveBoard = board;
+    });
   },
 });
 

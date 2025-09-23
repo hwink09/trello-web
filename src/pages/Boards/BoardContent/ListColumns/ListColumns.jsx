@@ -13,19 +13,29 @@ import {
   horizontalListSortingStrategy,
 } from "@dnd-kit/sortable";
 
-function ListColumns({
-  columns,
-  createNewColumn,
-  createNewCard,
-  deleteColDetails,
-}) {
+import { createNewColumnAPI } from "~/apis";
+import { generatePlaceholderCard } from "~/utils/formatters";
+
+import {
+  updateCurrentActiveBoard,
+  selectCurrentActiveBoard,
+} from "~/redux/activeBoard/activeBoardSlice";
+
+import { useDispatch, useSelector } from "react-redux";
+
+import { cloneDeep } from "lodash";
+
+function ListColumns({ columns }) {
+  const dispatch = useDispatch();
+  const board = useSelector(selectCurrentActiveBoard);
+
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
   const [newColumnTitle, setNewColumnTitle] = useState("");
 
   const toggleOpenNewColumnForm = () =>
     setOpenNewColumnForm(!openNewColumnForm);
 
-  const addNewColumn = () => {
+  const addNewColumn = async () => {
     if (!newColumnTitle) {
       toast.error("Please Enter Column Title!");
       return;
@@ -36,11 +46,27 @@ function ListColumns({
       title: newColumnTitle,
     };
 
-    /**
-     * Gọi lên props func createNewColumn nằm ở component cha cao nhất (boards/_id.jsx)
-     * Sau này có Redux Global Store thì có thể gọi luôn API ở đây là được không cần phải gọi ngược lên
-     */
-    createNewColumn(newColumnData);
+    // Gọi API tạo mới Column và làm lại dữ liệu State Board
+    const createdColumn = await createNewColumnAPI({
+      ...newColumnData,
+      boardId: board._id,
+    });
+
+    // Khi tạo Column mới thì nó cũng chưa có card nên cũng cần xử lí vấn đề kéo thả vào một column rỗng
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)];
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id];
+
+    // Cập nhật state board
+    //Lỗi object is not extensible bời dù đã copy/clone ra giá trị NewBoard nhưng bản chất của spread operator là Shallow Copy/Clone, nên dính phải rules Immutability trong Redux Toolkit không được dùng hàm PUSH (sửa giá trị mảng trực tiếp), cách đơn giản nhanh gọn nhất ở trường hợp này là dung tới Deep Copty/Clone toàn bộ cái Board cho dễ hiểu và clone ngắn gọn
+    // https://redux-toolkit.js.org/usage/immer-reducers
+    // https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
+
+    // const newBoard = { ...board };
+    const newBoard = cloneDeep(board);
+    newBoard.columns.push(createdColumn);
+    newBoard.columnOrderIds.push(createdColumn._id);
+    dispatch(updateCurrentActiveBoard(newBoard));
+
     // Đóng lại trạng thái thêm Column và clear input
     toggleOpenNewColumnForm();
     setNewColumnTitle("");
@@ -69,12 +95,7 @@ function ListColumns({
         }}
       >
         {columns?.map((column) => (
-          <Column
-            key={column._id}
-            column={column}
-            createNewCard={createNewCard}
-            deleteColDetails={deleteColDetails}
-          />
+          <Column key={column._id} column={column} />
         ))}
         {/* Box add new column CTA */}\
         {!openNewColumnForm ? (
