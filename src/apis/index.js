@@ -9,11 +9,12 @@ import { API_ROOT } from "~/utils/constants";
  */
 
 /** Boards */
-export const fetchBoardDetailsAPI = async (boardId) => {
-  const res = await axios.get(`${API_ROOT}/v1/boards/${boardId}`);
-  // axios sẽ trả kết quả về qua property của nó là data
-  return res.data;
-};
+// Đã move vào Redux
+// export const fetchBoardDetailsAPI = async (boardId) => {
+//   const res = await axios.get(`${API_ROOT}/v1/boards/${boardId}`);
+//    axios sẽ trả kết quả về qua property của nó là data
+//   return res.data;
+// };
 
 export const updateBoardDetailsAPI = async (boardId, updateData) => {
   const res = await axios.put(`${API_ROOT}/v1/boards/${boardId}`, updateData);
