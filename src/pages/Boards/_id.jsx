@@ -1,39 +1,35 @@
-import { useEffect } from "react";
-import { cloneDeep } from "lodash";
+import { useEffect } from 'react'
+import { cloneDeep } from 'lodash'
 
-import Container from "@mui/material/Container";
-import CircularProgress from "@mui/material/CircularProgress";
-import Typography from "@mui/material/Typography";
-import Box from "@mui/material/Box";
+import Container from '@mui/material/Container'
+import CircularProgress from '@mui/material/CircularProgress'
+import Typography from '@mui/material/Typography'
+import Box from '@mui/material/Box'
 
-import AppBar from "~/components/AppBar/AppBar.jsx";
-import BoardBar from "./BoardBar/BoardBar";
-import BoxContent from "./BoardContent/BoardContent";
+import AppBar from '~/components/AppBar/AppBar.jsx'
+import BoardBar from './BoardBar/BoardBar'
+import BoxContent from './BoardContent/BoardContent'
 
-import {
-  updateBoardDetailsAPI,
-  updateColumnDetailsAPI,
-  moveCardToDifferentColumnAPI,
-} from "~/apis";
+import { updateBoardDetailsAPI, updateColumnDetailsAPI, moveCardToDifferentColumnAPI } from '~/apis'
 
 import {
   fetchBoardDetailsAPI,
   updateCurrentActiveBoard,
-  selectCurrentActiveBoard,
-} from "~/redux/activeBoard/activeBoardSlice";
+  selectCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux'
 
 function Board() {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch()
   // Không dùng State của component nữa mà dùng state của Redux
-  const board = useSelector(selectCurrentActiveBoard);
+  const board = useSelector(selectCurrentActiveBoard)
 
   useEffect(() => {
-    const boardId = "68b55a67bf6162a3ed544944";
+    const boardId = '68b55a67bf6162a3ed544944'
     // Call api
-    dispatch(fetchBoardDetailsAPI(boardId));
-  }, [dispatch]);
+    dispatch(fetchBoardDetailsAPI(boardId))
+  }, [dispatch])
 
   /**
    * Khi gọi API và xử lí khi đã kéo thả xong xuôi
@@ -41,19 +37,19 @@ function Board() {
    * */
   const moveColumns = (dndOrderedColumns) => {
     // update cho chuẩn dữ liệu state board
-    const dndOrderedColumnsIds = dndOrderedColumns?.map((c) => c._id);
+    const dndOrderedColumnsIds = dndOrderedColumns?.map((c) => c._id)
 
     //Trường hợp dùng Spread Operator này thì không bị sao bởi vì không dùng push như ở trên làm thay đổi trực tiếp kiểu mở rộng mảng mà chỉ gán lại toàn bộ giá trị của column và columnOrderIds bằng 2 mảng mới.
-    const newBoard = { ...board };
-    newBoard.columns = dndOrderedColumns;
-    newBoard.columnOrderIds = dndOrderedColumnsIds;
-    dispatch(updateCurrentActiveBoard(newBoard));
+    const newBoard = { ...board }
+    newBoard.columns = dndOrderedColumns
+    newBoard.columnOrderIds = dndOrderedColumnsIds
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     // Gọi api update Board
     updateBoardDetailsAPI(newBoard._id, {
-      columnOrderIds: newBoard.columnOrderIds,
-    });
-  };
+      columnOrderIds: newBoard.columnOrderIds
+    })
+  }
 
   /**
    * Khi di chuyển card trong cùng column:
@@ -67,19 +63,19 @@ function Board() {
     // update cho chuẩn dữ liệu state board
     // Cannot assign to read only property 'card' of object
     // Trường họp Immutability ở đây đụng tới giá trị cards đang được coi là read only - (nested object - can thiệp sâu dữ liệu)
-    const newBoard = cloneDeep(board);
+    const newBoard = cloneDeep(board)
     const columnToUpdate = newBoard.columns.find(
       (column) => column._id === columnId
-    );
+    )
     if (columnToUpdate) {
-      columnToUpdate.cards = dndOrderedCard;
-      columnToUpdate.cardOrderIds = dndOrderedCardIds;
+      columnToUpdate.cards = dndOrderedCard
+      columnToUpdate.cardOrderIds = dndOrderedCardIds
     }
-    dispatch(updateCurrentActiveBoard(newBoard));
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     // Gọi api update Board
-    updateColumnDetailsAPI(columnId, { cardOrderIds: dndOrderedCardIds });
-  };
+    updateColumnDetailsAPI(columnId, { cardOrderIds: dndOrderedCardIds })
+  }
 
   /**
    * Khi di chuyển card sang column khác
@@ -95,51 +91,50 @@ function Board() {
     dndOrderedColumns
   ) => {
     // update cho chuẩn dữ liệu state board
-    const dndOrderedColumnsIds = dndOrderedColumns?.map((c) => c._id);
+    const dndOrderedColumnsIds = dndOrderedColumns?.map((c) => c._id)
     // Tương tụ đoạn xử lí chỗ hàm moveColumns nên không ảnh hưởng Redux Toolkit Immutability
-    const newBoard = { ...board };
-    newBoard.columns = dndOrderedColumns;
-    newBoard.columnOrderIds = dndOrderedColumnsIds;
-    dispatch(updateCurrentActiveBoard(newBoard));
+    const newBoard = { ...board }
+    newBoard.columns = dndOrderedColumns
+    newBoard.columnOrderIds = dndOrderedColumnsIds
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     // Gọi API xử lí phía BE
     let prevCardOrderIds = dndOrderedColumns.find(
       (c) => c._id === prevColumnId
-    )?.cardOrderIds;
+    )?.cardOrderIds
     // Xử lí vấn đề khi kéo card cuối cùng ra khỏi column, column rỗng sẽ có placeholder-card, cần xóa nó đi trước khi gửi cho BE
-    if (prevCardOrderIds[0]?.includes("placeholder-card"))
-      prevCardOrderIds = [];
+    if (prevCardOrderIds[0]?.includes('placeholder-card'))
+      prevCardOrderIds = []
 
     moveCardToDifferentColumnAPI({
       currentCardId,
       prevColumnId,
       prevCardOrderIds,
       nextColumnId,
-      nextCardOrderIds: dndOrderedColumns.find((c) => c._id === nextColumnId)
-        ?.cardOrderIds,
-    });
-  };
+      nextCardOrderIds: dndOrderedColumns.find(c => c._id === nextColumnId)?.cardOrderIds
+    })
+  }
 
   if (!board) {
     return (
       <Box
         sx={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
           gap: 2,
-          width: "100vw",
-          height: "100vh",
+          width: '100vw',
+          height: '100vh'
         }}
       >
         <CircularProgress />
         <Typography>Loading Board...</Typography>
       </Box>
-    );
+    )
   }
 
   return (
-    <Container disableGutters maxWidth={false} sx={{ height: "100vh" }}>
+    <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
       <AppBar />
       <BoardBar board={board} />
       <BoxContent
@@ -149,7 +144,7 @@ function Board() {
         moveCardToDifferentColumn={moveCardToDifferentColumn}
       />
     </Container>
-  );
+  )
 }
 
-export default Board;
+export default Board

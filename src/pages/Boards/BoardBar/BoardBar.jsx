@@ -1,47 +1,47 @@
-import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
-import DashboardIcon from "@mui/icons-material/Dashboard";
-import VpnLockIcon from "@mui/icons-material/VpnLock";
-import AddToDriveIcon from "@mui/icons-material/AddToDrive";
-import ElectricBoltIcon from "@mui/icons-material/ElectricBolt";
-import FilterListIcon from "@mui/icons-material/FilterList";
-import Avatar from "@mui/material/Avatar";
-import AvatarGroup from "@mui/material/AvatarGroup";
-import Tooltip from "@mui/material/Tooltip";
-import Button from "@mui/material/Button";
-import PersonAddIcon from "@mui/icons-material/PersonAdd";
-import { capitalizeFirstLetter } from "~/utils/formatters";
+import Box from '@mui/material/Box'
+import Chip from '@mui/material/Chip'
+import DashboardIcon from '@mui/icons-material/Dashboard'
+import VpnLockIcon from '@mui/icons-material/VpnLock'
+import AddToDriveIcon from '@mui/icons-material/AddToDrive'
+import ElectricBoltIcon from '@mui/icons-material/ElectricBolt'
+import FilterListIcon from '@mui/icons-material/FilterList'
+import Avatar from '@mui/material/Avatar'
+import AvatarGroup from '@mui/material/AvatarGroup'
+import Tooltip from '@mui/material/Tooltip'
+import Button from '@mui/material/Button'
+import PersonAddIcon from '@mui/icons-material/PersonAdd'
+import { capitalizeFirstLetter } from '~/utils/formatters'
 
 const MENU_STYLES = {
-  color: "white",
-  bgcolor: "transparent",
-  border: "none",
-  paddingX: "5px",
-  borderRadius: "4px",
-  ".MuiSvgIcon-root": {
-    color: "white",
+  color: 'white',
+  bgcolor: 'transparent',
+  border: 'none',
+  paddingX: '5px',
+  borderRadius: '4px',
+  '.MuiSvgIcon-root': {
+    color: 'white'
   },
-  "&:hover": {
-    bgcolor: "primary.50",
-  },
-};
+  '&:hover': {
+    bgcolor: 'primary.50'
+  }
+}
 function BoardBar({ board }) {
   return (
     <Box
       sx={{
-        width: "100%",
+        width: '100%',
         height: (theme) => theme.trello.boardBarHeight,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
         gap: 2,
         paddingX: 2,
-        overflowX: "auto",
+        overflowX: 'auto',
         bgcolor: (theme) =>
-          theme.palette.mode === "dark" ? "#34495e" : "#1976d2",
+          theme.palette.mode === 'dark' ? '#34495e' : '#1976d2'
       }}
     >
-      <Box sx={{ display: "flex", alignItems: "center" }} gap={1}>
+      <Box sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
         <Tooltip title={board?.description}>
           <Chip
             sx={MENU_STYLES}
@@ -59,31 +59,31 @@ function BoardBar({ board }) {
         <Chip
           sx={MENU_STYLES}
           icon={<AddToDriveIcon />}
-          label="Add to Google Drive"
+          label='Add to Google Drive'
           clickable
         />
         <Chip
           sx={MENU_STYLES}
           icon={<ElectricBoltIcon />}
-          label="Automation"
+          label='Automation'
           clickable
         />
         <Chip
           sx={MENU_STYLES}
           icon={<FilterListIcon />}
-          label="Filter"
+          label='Filter'
           clickable
         />
       </Box>
 
-      <Box sx={{ display: "flex", alignItems: "center" }} gap={1}></Box>
+      <Box sx={{ display: 'flex', alignItems: 'center' }} gap={1}></Box>
       <Button
-        variant="outlined"
+        variant='outlined'
         startIcon={<PersonAddIcon />}
         sx={{
-          color: "white",
-          borderColor: "white",
-          "&:hover": { borderColor: "white" },
+          color: 'white',
+          borderColor: 'white',
+          '&:hover': { borderColor: 'white' }
         }}
       >
         Invite
@@ -92,27 +92,27 @@ function BoardBar({ board }) {
       <AvatarGroup
         max={3}
         sx={{
-          gap: "10px",
-          "& .MuiAvatar-root": {
+          gap: '10px',
+          '& .MuiAvatar-root': {
             width: 32,
             height: 32,
             fontSize: 16,
-            border: "none",
-            color: "white",
-            cursor: "pointer",
-            "&:first-of-type": { bgcolor: "#a4b0be" },
-          },
+            border: 'none',
+            color: 'white',
+            cursor: 'pointer',
+            '&:first-of-type': { bgcolor: '#a4b0be' }
+          }
         }}
       >
-        <Tooltip title="hwink">
+        <Tooltip title='hwink'>
           <Avatar
-            alt="hwink"
-            src="https://mui.com/static/images/avatar/1.jpg"
+            alt='hwink'
+            src='https://mui.com/static/images/avatar/1.jpg'
           />
         </Tooltip>
       </AvatarGroup>
     </Box>
-  );
+  )
 }
 
-export default BoardBar;
+export default BoardBar

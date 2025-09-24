@@ -1,76 +1,70 @@
-import { useState } from "react";
-import { toast } from "react-toastify";
+import { useState } from 'react'
+import { toast } from 'react-toastify'
 
-import Box from "@mui/material/Box";
-import Column from "./Column/Column";
-import Button from "@mui/material/Button";
-import NoteAddIcon from "@mui/icons-material/NoteAdd";
-import CloseIcon from "@mui/icons-material/Close";
-import TextField from "@mui/material/TextField";
+import Box from '@mui/material/Box'
+import Column from './Column/Column'
+import Button from '@mui/material/Button'
+import NoteAddIcon from '@mui/icons-material/NoteAdd'
+import CloseIcon from '@mui/icons-material/Close'
+import TextField from '@mui/material/TextField'
 
-import {
-  SortableContext,
-  horizontalListSortingStrategy,
-} from "@dnd-kit/sortable";
+import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
 
-import { createNewColumnAPI } from "~/apis";
-import { generatePlaceholderCard } from "~/utils/formatters";
+import { createNewColumnAPI } from '~/apis'
+import { generatePlaceholderCard } from '~/utils/formatters'
 
-import {
-  updateCurrentActiveBoard,
-  selectCurrentActiveBoard,
-} from "~/redux/activeBoard/activeBoardSlice";
+import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch, useSelector } from 'react-redux'
 
-import { cloneDeep } from "lodash";
+import { cloneDeep } from 'lodash'
 
 function ListColumns({ columns }) {
-  const dispatch = useDispatch();
-  const board = useSelector(selectCurrentActiveBoard);
+  const dispatch = useDispatch()
+  const board = useSelector(selectCurrentActiveBoard)
 
-  const [openNewColumnForm, setOpenNewColumnForm] = useState(false);
-  const [newColumnTitle, setNewColumnTitle] = useState("");
+  const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
+  const [newColumnTitle, setNewColumnTitle] = useState('')
 
   const toggleOpenNewColumnForm = () =>
-    setOpenNewColumnForm(!openNewColumnForm);
+    setOpenNewColumnForm(!openNewColumnForm)
 
   const addNewColumn = async () => {
     if (!newColumnTitle) {
-      toast.error("Please Enter Column Title!");
-      return;
+      toast.error('Please Enter Column Title!')
+      return
     }
 
     // Tạo dữ liệu Column để gọi API
     const newColumnData = {
-      title: newColumnTitle,
-    };
+      title: newColumnTitle
+    }
 
     // Gọi API tạo mới Column và làm lại dữ liệu State Board
     const createdColumn = await createNewColumnAPI({
       ...newColumnData,
-      boardId: board._id,
-    });
+      boardId: board._id
+    })
 
     // Khi tạo Column mới thì nó cũng chưa có card nên cũng cần xử lí vấn đề kéo thả vào một column rỗng
-    createdColumn.cards = [generatePlaceholderCard(createdColumn)];
-    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id];
+    createdColumn.cards = [generatePlaceholderCard(createdColumn)]
+    createdColumn.cardOrderIds = [generatePlaceholderCard(createdColumn)._id]
 
     // Cập nhật state board
     //Lỗi object is not extensible bời dù đã copy/clone ra giá trị NewBoard nhưng bản chất của spread operator là Shallow Copy/Clone, nên dính phải rules Immutability trong Redux Toolkit không được dùng hàm PUSH (sửa giá trị mảng trực tiếp), cách đơn giản nhanh gọn nhất ở trường hợp này là dung tới Deep Copty/Clone toàn bộ cái Board cho dễ hiểu và clone ngắn gọn
     // https://redux-toolkit.js.org/usage/immer-reducers
     // https://www.javascripttutorial.net/object/3-ways-to-copy-objects-in-javascript/
 
-    // const newBoard = { ...board };
-    const newBoard = cloneDeep(board);
-    newBoard.columns.push(createdColumn);
-    newBoard.columnOrderIds.push(createdColumn._id);
-    dispatch(updateCurrentActiveBoard(newBoard));
+    // const newBoard = { ...board }
+    const newBoard = cloneDeep(board)
+    newBoard.columns.push(createdColumn)
+    newBoard.columnOrderIds.push(createdColumn._id)
+    dispatch(updateCurrentActiveBoard(newBoard))
 
     // Đóng lại trạng thái thêm Column và clear input
-    toggleOpenNewColumnForm();
-    setNewColumnTitle("");
-  };
+    toggleOpenNewColumnForm()
+    setNewColumnTitle('')
+  }
 
   /**
    * Thằng SortableContext yêu cầu items là một mảng dạng ['id-1', 'id-2',...]
@@ -85,13 +79,13 @@ function ListColumns({ columns }) {
     >
       <Box
         sx={{
-          pgColor: "inherit",
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          overflowX: "auto",
-          overflowY: "hidden",
-          "&::-webkit-scrollbar-track": { m: 2 },
+          pgColor: 'inherit',
+          width: '100%',
+          height: '100%',
+          display: 'flex',
+          overflowX: 'auto',
+          overflowY: 'hidden',
+          '&::-webkit-scrollbar-track': { m: 2 }
         }}
       >
         {columns?.map((column) => (
@@ -102,22 +96,22 @@ function ListColumns({ columns }) {
           <Box
             onClick={toggleOpenNewColumnForm}
             sx={{
-              minWidth: "250px",
-              maxWidth: "250px",
+              minWidth: '250px',
+              maxWidth: '250px',
               mx: 2,
-              borderRadius: "6px",
-              height: "fit-content",
-              bgcolor: "#ffffff3d",
+              borderRadius: '6px',
+              height: 'fit-content',
+              bgcolor: '#ffffff3d'
             }}
           >
             <Button
               startIcon={<NoteAddIcon />}
               sx={{
-                color: "white",
-                width: "100%",
-                justifyContent: "flex-start",
+                color: 'white',
+                width: '100%',
+                justifyContent: 'flex-start',
                 pl: 2.5,
-                py: 1,
+                py: 1
               }}
             >
               Add new column
@@ -126,57 +120,57 @@ function ListColumns({ columns }) {
         ) : (
           <Box
             sx={{
-              minWith: "250px",
-              maxWith: "250px",
+              minWith: '250px',
+              maxWith: '250px',
               mx: 2,
               p: 1,
-              borderRadius: "6px",
-              height: "fit-content",
-              bgcolor: "#ffffff3d",
-              display: "flex",
-              flexDirection: "column",
-              gap: 1,
+              borderRadius: '6px',
+              height: 'fit-content',
+              bgcolor: '#ffffff3d',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 1
             }}
           >
             <TextField
-              label="Enter column title..."
-              type="text"
-              size="small"
-              variant="outlined"
+              label='Enter column title...'
+              type='text'
+              size='small'
+              variant='outlined'
               autoFocus
               value={newColumnTitle}
               onChange={(e) => setNewColumnTitle(e.target.value)}
               sx={{
-                "& label": { color: "white" },
-                "& input": { color: "white" },
-                "& label.Mui-focused": { color: "white" },
-                "& .MuiOutlinedInput-root": {
-                  "& fieldset": { borderColor: "white" },
-                  "&:hover fieldset": { borderColor: "white" },
-                  "&.Mui-focused fieldset": { borderColor: "white" },
-                },
+                '& label': { color: 'white' },
+                '& input': { color: 'white' },
+                '& label.Mui-focused': { color: 'white' },
+                '& .MuiOutlinedInput-root': {
+                  '& fieldset': { borderColor: 'white' },
+                  '&:hover fieldset': { borderColor: 'white' },
+                  '&.Mui-focused fieldset': { borderColor: 'white' }
+                }
               }}
             />
-            <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Button
                 onClick={addNewColumn}
-                variant="contained"
-                color="success"
-                size="small"
+                variant='contained'
+                color='success'
+                size='small'
                 sx={{
-                  boxShadow: "none",
-                  border: "0.5px solid",
-                  borderColor: (theme) => theme.palette.success.main,
+                  boxShadow: 'none',
+                  border: '0.5px solid',
+                  borderColor: (theme) => theme.palette.success.main
                 }}
               >
                 Add Column
               </Button>
               <CloseIcon
-                fontSize="small"
+                fontSize='small'
                 sx={{
-                  color: "white",
-                  cursor: "pointer",
-                  "&:hover": { color: (theme) => theme.palette.warning.light },
+                  color: 'white',
+                  cursor: 'pointer',
+                  '&:hover': { color: (theme) => theme.palette.warning.light }
                 }}
                 onClick={toggleOpenNewColumnForm}
               />
@@ -185,7 +179,7 @@ function ListColumns({ columns }) {
         )}
       </Box>
     </SortableContext>
-  );
+  )
 }
 
-export default ListColumns;
+export default ListColumns
