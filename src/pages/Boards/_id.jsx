@@ -10,7 +10,11 @@ import AppBar from '~/components/AppBar/AppBar.jsx'
 import BoardBar from './BoardBar/BoardBar'
 import BoxContent from './BoardContent/BoardContent'
 
-import { updateBoardDetailsAPI, updateColumnDetailsAPI, moveCardToDifferentColumnAPI } from '~/apis'
+import {
+  updateBoardDetailsAPI,
+  updateColumnDetailsAPI,
+  moveCardToDifferentColumnAPI
+} from '~/apis'
 
 import {
   fetchBoardDetailsAPI,
@@ -19,17 +23,19 @@ import {
 } from '~/redux/activeBoard/activeBoardSlice'
 
 import { useDispatch, useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom'
 
 function Board() {
   const dispatch = useDispatch()
   // Không dùng State của component nữa mà dùng state của Redux
   const board = useSelector(selectCurrentActiveBoard)
 
+  const { boardId } = useParams()
+
   useEffect(() => {
-    const boardId = '68b55a67bf6162a3ed544944'
     // Call api
     dispatch(fetchBoardDetailsAPI(boardId))
-  }, [dispatch])
+  }, [dispatch, boardId])
 
   /**
    * Khi gọi API và xử lí khi đã kéo thả xong xuôi
@@ -103,15 +109,15 @@ function Board() {
       (c) => c._id === prevColumnId
     )?.cardOrderIds
     // Xử lí vấn đề khi kéo card cuối cùng ra khỏi column, column rỗng sẽ có placeholder-card, cần xóa nó đi trước khi gửi cho BE
-    if (prevCardOrderIds[0]?.includes('placeholder-card'))
-      prevCardOrderIds = []
+    if (prevCardOrderIds[0]?.includes('placeholder-card')) prevCardOrderIds = []
 
     moveCardToDifferentColumnAPI({
       currentCardId,
       prevColumnId,
       prevCardOrderIds,
       nextColumnId,
-      nextCardOrderIds: dndOrderedColumns.find(c => c._id === nextColumnId)?.cardOrderIds
+      nextCardOrderIds: dndOrderedColumns.find((c) => c._id === nextColumnId)
+        ?.cardOrderIds
     })
   }
 
