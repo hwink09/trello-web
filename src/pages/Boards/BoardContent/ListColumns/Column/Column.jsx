@@ -182,7 +182,7 @@ function Column({ column }) {
           }}
         >
           <Typography
-            variant='h6'
+            variant="h6"
             sx={{
               fontSize: '1rem',
               fontWeight: 'bold',
@@ -193,18 +193,18 @@ function Column({ column }) {
           </Typography>
 
           <Box>
-            <Tooltip title='More options'>
+            <Tooltip title="More options">
               <ExpandMore
                 sx={{ color: 'text.primary', cursor: 'pointer' }}
-                id='basic-column-dropdown'
+                id="basic-column-dropdown"
                 aria-controls={open ? 'basic-menu-column-dropdown' : undefined}
-                aria-haspopup='true'
+                aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
               />
             </Tooltip>
             <Menu
-              id='basic-menu-column-dropdown'
+              id="basic-menu-column-dropdown"
               anchorEl={anchorEl}
               open={open}
               onClose={handleClose}
@@ -223,28 +223,28 @@ function Column({ column }) {
                 }}
               >
                 <ListItemIcon>
-                  <AddCardIcon className='add-card-icon' fontSize='small' />
+                  <AddCardIcon className="add-card-icon" fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Add New Card</ListItemText>
               </MenuItem>
 
               <MenuItem>
                 <ListItemIcon>
-                  <ContentCut fontSize='small' />
+                  <ContentCut fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Cut</ListItemText>
               </MenuItem>
 
               <MenuItem>
                 <ListItemIcon>
-                  <ContentCopy fontSize='small' />
+                  <ContentCopy fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Copy</ListItemText>
               </MenuItem>
 
               <MenuItem>
                 <ListItemIcon>
-                  <ContentPaste fontSize='small' />
+                  <ContentPaste fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Paste</ListItemText>
               </MenuItem>
@@ -262,8 +262,8 @@ function Column({ column }) {
               >
                 <ListItemIcon>
                   <DeleteForeverIcon
-                    className='delete-forever-icon'
-                    fontSize='small'
+                    className="delete-forever-icon"
+                    fontSize="small"
                   />
                 </ListItemIcon>
                 <ListItemText>Delete this column</ListItemText>
@@ -271,7 +271,7 @@ function Column({ column }) {
 
               <MenuItem>
                 <ListItemIcon>
-                  <ArchiveIcon fontSize='small' />
+                  <ArchiveIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText>Archive this column</ListItemText>
               </MenuItem>
@@ -304,7 +304,7 @@ function Column({ column }) {
               >
                 Add New Card
               </Button>
-              <Tooltip title='Drag To Move'>
+              <Tooltip title="Drag To Move">
                 <DragHandleIcon sx={{ cursor: 'pointer' }} />
               </Tooltip>
             </Box>
@@ -318,12 +318,12 @@ function Column({ column }) {
               }}
             >
               <TextField
-                label='Enter card title...'
-                type='text'
-                size='small'
-                variant='outlined'
+                label="Enter card title..."
+                type="text"
+                size="small"
+                variant="outlined"
                 autoFocus
-                data-no-dnd='true'
+                data-no-dnd="true"
                 value={newCardTitle}
                 onChange={(e) => setNewCardTitle(e.target.value)}
                 sx={{
@@ -354,10 +354,11 @@ function Column({ column }) {
               />
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Button
+                  className="interceptor-loading"
                   onClick={addNewCard}
-                  variant='contained'
-                  color='success'
-                  size='small'
+                  variant="contained"
+                  color="success"
+                  size="small"
                   sx={{
                     boxShadow: 'none',
                     border: '0.5px solid',
@@ -367,7 +368,7 @@ function Column({ column }) {
                   Add
                 </Button>
                 <CloseIcon
-                  fontSize='small'
+                  fontSize="small"
                   sx={{
                     color: (theme) => theme.palette.warning.light,
                     cursor: 'pointer'
