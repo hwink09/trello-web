@@ -8,12 +8,18 @@ import NoteAddIcon from '@mui/icons-material/NoteAdd'
 import CloseIcon from '@mui/icons-material/Close'
 import TextField from '@mui/material/TextField'
 
-import { SortableContext, horizontalListSortingStrategy } from '@dnd-kit/sortable'
+import {
+  SortableContext,
+  horizontalListSortingStrategy
+} from '@dnd-kit/sortable'
 
 import { createNewColumnAPI } from '~/apis'
 import { generatePlaceholderCard } from '~/utils/formatters'
 
-import { updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
+import {
+  updateCurrentActiveBoard,
+  selectCurrentActiveBoard
+} from '~/redux/activeBoard/activeBoardSlice'
 
 import { useDispatch, useSelector } from 'react-redux'
 
@@ -26,8 +32,7 @@ function ListColumns({ columns }) {
   const [openNewColumnForm, setOpenNewColumnForm] = useState(false)
   const [newColumnTitle, setNewColumnTitle] = useState('')
 
-  const toggleOpenNewColumnForm = () =>
-    setOpenNewColumnForm(!openNewColumnForm)
+  const toggleOpenNewColumnForm = () => setOpenNewColumnForm(!openNewColumnForm)
 
   const addNewColumn = async () => {
     if (!newColumnTitle) {
@@ -133,10 +138,10 @@ function ListColumns({ columns }) {
             }}
           >
             <TextField
-              label='Enter column title...'
-              type='text'
-              size='small'
-              variant='outlined'
+              label="Enter column title..."
+              type="text"
+              size="small"
+              variant="outlined"
               autoFocus
               value={newColumnTitle}
               onChange={(e) => setNewColumnTitle(e.target.value)}
@@ -153,10 +158,11 @@ function ListColumns({ columns }) {
             />
             <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
               <Button
+                className="interceptor-loading"
                 onClick={addNewColumn}
-                variant='contained'
-                color='success'
-                size='small'
+                variant="contained"
+                color="success"
+                size="small"
                 sx={{
                   boxShadow: 'none',
                   border: '0.5px solid',
@@ -166,7 +172,7 @@ function ListColumns({ columns }) {
                 Add Column
               </Button>
               <CloseIcon
-                fontSize='small'
+                fontSize="small"
                 sx={{
                   color: 'white',
                   cursor: 'pointer',
