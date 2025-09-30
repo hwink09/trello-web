@@ -2,11 +2,9 @@ import { useEffect } from 'react'
 import { cloneDeep } from 'lodash'
 
 import Container from '@mui/material/Container'
-import CircularProgress from '@mui/material/CircularProgress'
-import Typography from '@mui/material/Typography'
-import Box from '@mui/material/Box'
 
-import AppBar from '~/components/AppBar/AppBar.jsx'
+import AppBar from '~/components/AppBar/AppBar'
+import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
 import BoardBar from './BoardBar/BoardBar'
 import BoxContent from './BoardContent/BoardContent'
 
@@ -122,21 +120,7 @@ function Board() {
   }
 
   if (!board) {
-    return (
-      <Box
-        sx={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          gap: 2,
-          width: '100vw',
-          height: '100vh'
-        }}
-      >
-        <CircularProgress />
-        <Typography>Loading Board...</Typography>
-      </Box>
-    )
+    return <PageLoadingSpinner caption="Loading Board..." />
   }
 
   return (
