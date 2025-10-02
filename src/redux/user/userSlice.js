@@ -42,7 +42,7 @@ export const userSlice = createSlice({
 
 // Selectors: là nơi dành cho các components bên dưới gọi bằng hook useSelector() để lấy dữ liệu từ trong kho Redux store ra sử dụng
 export const selectCurrentUser = (state) => {
-  return state.user.currentUsr
+  return state.user.currentUser
 }
 
 export const userReducer = userSlice.reducer
