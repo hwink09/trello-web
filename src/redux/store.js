@@ -31,6 +31,9 @@ const persistedReducer = persistReducer(rootPersistConfig, reducers)
 
 export const store = configureStore({
   reducer: persistedReducer,
+  devTools:
+    window.__REDUX_DEVTOOLS_EXTENSION__ &&
+    window.__REDUX_DEVTOOLS_EXTENSION__(),
   // Fix warning error when implement redux-persist
   // https://stackoverflow.com/a/63244831
   middleware: (getDefaultMiddleware) =>

@@ -46,8 +46,6 @@ function LoginForm() {
         pending: 'Logging in...'
       })
       .then((res) => {
-        console.log('🚀 ~ submitLogIn ~ res:', res)
-        // Đoạn này kiểm tra không có lỗi thì mới redirect về route /
         if (!res.error) navigate('/')
       })
   }
