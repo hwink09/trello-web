@@ -25,12 +25,7 @@ function App() {
   return (
     <Routes>
       {/* Redirect Route */}
-      <Route
-        path="/"
-        element={
-          <Navigate to="/boards/68b55a67bf6162a3ed544944" replace={true} />
-        }
-      />
+      <Route path="/" element={<Navigate to="/boards" replace={true} />} />
 
       {/* Protected Routes (Hiểu đơn giản là những route chỉ có thể truy cập khi đã login) */}
       <Route element={<ProtectedRoute user={currentUser} />}>

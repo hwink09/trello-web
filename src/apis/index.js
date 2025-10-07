@@ -10,6 +10,13 @@ import { API_ROOT } from '~/utils/constants'
  */
 
 /** Boards */
+export const fetchBoardsAPI = async (searchPath) => {
+  const res = await authorizeAxiosInstance.get(
+    `${API_ROOT}/v1/boards${searchPath}`
+  )
+  return res.data
+}
+
 // Đã move vào Redux
 // export const fetchBoardDetailsAPI = async (boardId) => {
 //   const res = await axios.get(`${API_ROOT}/v1/boards/${boardId}`)
