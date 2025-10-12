@@ -62,7 +62,6 @@ authorizeAxiosInstance.interceptors.response.use(
     // TH2: Nếu nhận mã 401 từ BE => gọi API refresh token để làm mới lại accessToken
     // Đầu tiền lấy được các request API đang bị lỗi thông qua error.config
     const originalRequests = error.config
-    console.log('🚀 ~ originalRequests:', originalRequests)
 
     if (error.response?.status === 410 && !originalRequests._retry) {
       originalRequests._retry = true

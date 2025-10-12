@@ -10,6 +10,12 @@ import { API_ROOT } from '~/utils/constants'
  */
 
 /** Boards */
+export const createNewBoardAPI = async (data) => {
+  const res = await authorizeAxiosInstance.post(`${API_ROOT}/v1/boards`, data)
+  toast.success('New board created successfully')
+  return res.data
+}
+
 export const fetchBoardsAPI = async (searchPath) => {
   const res = await authorizeAxiosInstance.get(
     `${API_ROOT}/v1/boards${searchPath}`
@@ -104,3 +110,4 @@ export const refreshTokenAPI = async () => {
   )
   return res.data
 }
+
