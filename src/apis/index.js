@@ -79,6 +79,11 @@ export const createNewCardAPI = async (newCardData) => {
   return res.data
 }
 
+export const updateCardDetailsAPI = async (cardId, updateData) => {
+  const res = await authorizeAxiosInstance.put(`${API_ROOT}/v1/cards/${cardId}`, updateData)
+  return res.data
+}
+
 /** Users */
 export const registerUserAPI = async (data) => {
   const res = await authorizeAxiosInstance.post(

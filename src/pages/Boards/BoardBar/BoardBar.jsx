@@ -5,12 +5,11 @@ import VpnLockIcon from '@mui/icons-material/VpnLock'
 import AddToDriveIcon from '@mui/icons-material/AddToDrive'
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt'
 import FilterListIcon from '@mui/icons-material/FilterList'
-import Avatar from '@mui/material/Avatar'
-import AvatarGroup from '@mui/material/AvatarGroup'
 import Tooltip from '@mui/material/Tooltip'
 import Button from '@mui/material/Button'
 import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { capitalizeFirstLetter } from '~/utils/formatters'
+import BoardUserGroup from './BoardUserGroup'
 
 const MENU_STYLES = {
   color: 'white',
@@ -88,29 +87,8 @@ function BoardBar({ board }) {
       >
         Invite
       </Button>
-
-      <AvatarGroup
-        max={3}
-        sx={{
-          gap: '10px',
-          '& .MuiAvatar-root': {
-            width: 32,
-            height: 32,
-            fontSize: 16,
-            border: 'none',
-            color: 'white',
-            cursor: 'pointer',
-            '&:first-of-type': { bgcolor: '#a4b0be' }
-          }
-        }}
-      >
-        <Tooltip title='hwink'>
-          <Avatar
-            alt='hwink'
-            src='https://mui.com/static/images/avatar/1.jpg'
-          />
-        </Tooltip>
-      </AvatarGroup>
+      {/* Xử lí hiển thị danh sách thành viên của Board */}
+      <BoardUserGroup />
     </Box>
   )
 }

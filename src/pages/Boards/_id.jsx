@@ -1,32 +1,22 @@
 import { useEffect } from 'react'
 import { cloneDeep } from 'lodash'
-
 import Container from '@mui/material/Container'
-
 import AppBar from '~/components/AppBar/AppBar'
 import PageLoadingSpinner from '~/components/Loading/PageLoadingSpinner'
 import BoardBar from './BoardBar/BoardBar'
 import BoxContent from './BoardContent/BoardContent'
-
-import {
-  updateBoardDetailsAPI,
-  updateColumnDetailsAPI,
-  moveCardToDifferentColumnAPI
-} from '~/apis'
-
-import {
-  fetchBoardDetailsAPI,
-  updateCurrentActiveBoard,
-  selectCurrentActiveBoard
-} from '~/redux/activeBoard/activeBoardSlice'
-
+import { updateBoardDetailsAPI, updateColumnDetailsAPI, moveCardToDifferentColumnAPI } from '~/apis'
+import { fetchBoardDetailsAPI, updateCurrentActiveBoard, selectCurrentActiveBoard } from '~/redux/activeBoard/activeBoardSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
+import ActiveCard from '~/components/Modal/ActiveCard/ActiveCard'
+import { selectCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
 
 function Board() {
   const dispatch = useDispatch()
   // Không dùng State của component nữa mà dùng state của Redux
   const board = useSelector(selectCurrentActiveBoard)
+  const activeCard = useSelector(selectCurrentActiveCard)
 
   const { boardId } = useParams()
 
@@ -125,6 +115,10 @@ function Board() {
 
   return (
     <Container disableGutters maxWidth={false} sx={{ height: '100vh' }}>
+      {/* Modal Active Card, check đóng mở dựa trên điều kiện có tồn tại data activeCard lưu trong Redux hay không thì mới render, mỗi thời điểm chỉ tồn tại một cái Modal Card đang Active */}
+      {activeCard && <ActiveCard />}
+
+      {/* Các thành phần khác của Board */}
       <AppBar />
       <BoardBar board={board} />
       <BoxContent
