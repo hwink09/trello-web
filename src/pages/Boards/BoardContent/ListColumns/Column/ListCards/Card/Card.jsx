@@ -12,7 +12,7 @@ import { useSortable } from '@dnd-kit/sortable'
 import { CSS } from '@dnd-kit/utilities'
 
 import { useDispatch } from 'react-redux'
-import { updateCurrentActiveCard } from '~/redux/activeCard/activeCardSlice'
+import { updateCurrentActiveCard, showModalActiveCard } from '~/redux/activeCard/activeCardSlice'
 
 function Card({ card }) {
   const dispatch = useDispatch()
@@ -20,6 +20,8 @@ function Card({ card }) {
   const setActiveCard = () => {
     // Cập nhật data cho active card trong redux
     dispatch(updateCurrentActiveCard(card))
+    // Mở modal Active Card trong redux
+    dispatch(showModalActiveCard())
   }
 
   const {
