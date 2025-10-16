@@ -6,10 +6,9 @@ import AddToDriveIcon from '@mui/icons-material/AddToDrive'
 import ElectricBoltIcon from '@mui/icons-material/ElectricBolt'
 import FilterListIcon from '@mui/icons-material/FilterList'
 import Tooltip from '@mui/material/Tooltip'
-import Button from '@mui/material/Button'
-import PersonAddIcon from '@mui/icons-material/PersonAdd'
 import { capitalizeFirstLetter } from '~/utils/formatters'
 import BoardUserGroup from './BoardUserGroup'
+import InviteBoardUser from './InviteBoardUser'
 
 const MENU_STYLES = {
   color: 'white',
@@ -75,20 +74,12 @@ function BoardBar({ board }) {
         />
       </Box>
 
-      <Box sx={{ display: 'flex', alignItems: 'center' }} gap={1}></Box>
-      <Button
-        variant='outlined'
-        startIcon={<PersonAddIcon />}
-        sx={{
-          color: 'white',
-          borderColor: 'white',
-          '&:hover': { borderColor: 'white' }
-        }}
-      >
-        Invite
-      </Button>
-      {/* Xử lí hiển thị danh sách thành viên của Board */}
-      <BoardUserGroup boardUsers={board?.FE_allUsers} />
+      <Box sx={{ display: 'flex', alignItems: 'center' }} gap={1}>
+        {/* Xử lí mời thành viên vào Board */}
+        <InviteBoardUser boardId={board._id} />
+        {/* Xử lí hiển thị danh sách thành viên của Board */}
+        <BoardUserGroup boardUsers={board?.FE_allUsers} />
+      </Box>
     </Box>
   )
 }
