@@ -1,4 +1,3 @@
-// TrungQuanDev: https://youtube.com/@trungquandev
 import { Link, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
@@ -69,7 +68,7 @@ function RegisterForm() {
               color: (theme) => theme.palette.grey[500]
             }}
           >
-            Author: TrungQuanDev
+            Author: HwinkDev
           </Box>
           <Box sx={{ padding: '0 1em 1em 1em' }}>
             <Box sx={{ marginTop: '1em' }}>
