@@ -37,12 +37,8 @@ function RegisterForm() {
         pending: 'Registering...'
       })
       .then(() => {
-        // ===== UPDATED: Direct login redirect instead of verification step =====
-        // Old flow: navigate(`/login?registeredEmail=${user.email}`)
-        // New flow: Direct to login without email verification prompt
+        //navigate(`/login?registeredEmail=${user.email}`)
         navigate('/login')
-        // Alternative: Could auto-login here and redirect to dashboard
-        // ===== END OF UPDATE =====
       })
   }
 

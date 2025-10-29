@@ -1,4 +1,3 @@
-// ===== TEMPORARILY COMMENTED: useSearchParams not needed when verification is bypassed =====
 // import { Link, useSearchParams, useNavigate } from 'react-router-dom'
 import { Link, useNavigate } from 'react-router-dom'
 import Box from '@mui/material/Box'
@@ -11,7 +10,6 @@ import { ReactComponent as TrelloIcon } from '~/assets/trello.svg'
 import CardActions from '@mui/material/CardActions'
 import TextField from '@mui/material/TextField'
 import Zoom from '@mui/material/Zoom'
-// ===== TEMPORARILY COMMENTED: Alert not needed when verification is bypassed =====
 // import Alert from '@mui/material/Alert'
 import { useForm } from 'react-hook-form'
 import FieldErrorAlert from '~/components/Form/FieldErrorAlert'
@@ -38,12 +36,9 @@ function LoginForm() {
     formState: { errors }
   } = useForm()
 
-  // ===== TEMPORARILY DISABLED: Verification-related URL parameters =====
-  // These params are kept for backward compatibility but alerts are hidden below
   // let [searchParams] = new useSearchParams()
   // const registeredEmail = searchParams.get('registeredEmail')
   // const verifiedEmail = searchParams.get('verifiedEmail')
-  // ===== END OF DISABLED CODE =====
 
   const submitLogIn = (data) => {
     const { email, password } = data
@@ -94,8 +89,6 @@ function LoginForm() {
               padding: '0 1em'
             }}
           >
-            {/* ===== TEMPORARILY HIDDEN: Verification alerts ===== */}
-            {/* Email verification is bypassed, so these messages are no longer needed */}
             {/*
             {verifiedEmail && (
               <Alert
@@ -132,7 +125,6 @@ function LoginForm() {
               </Alert>
             )}
             */}
-            {/* ===== END OF HIDDEN VERIFICATION ALERTS ===== */}
           </Box>
           <Box sx={{ padding: '0 1em 1em 1em' }}>
             <Box sx={{ marginTop: '1em' }}>
