@@ -90,13 +90,18 @@ export const registerUserAPI = async (data) => {
     `${API_ROOT}/v1/users/register`,
     data
   )
+  // ===== UPDATED MESSAGE: Verification bypassed =====
+  // Old message: 'Registration successful! Please check your email to verify your account.'
   toast.success(
-    'Registration successful! Please check your email to verify your account.',
+    'Account created successfully! You can now log in.',
     { theme: 'colored' }
   )
   return res.data
 }
 
+// ===== DEPRECATED: Verification endpoint kept for backward compatibility =====
+// NOTE: Email verification is currently bypassed on the backend.
+// This function may return errors if called, as accounts are auto-activated.
 export const verifyUserAPI = async (data) => {
   const res = await authorizeAxiosInstance.put(
     `${API_ROOT}/v1/users/verify`,
@@ -108,6 +113,7 @@ export const verifyUserAPI = async (data) => {
   )
   return res.data
 }
+// ===== END OF DEPRECATED FUNCTION =====
 
 export const refreshTokenAPI = async () => {
   const res = await authorizeAxiosInstance.get(
