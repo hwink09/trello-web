@@ -98,10 +98,6 @@ export const registerUserAPI = async (data) => {
   )
   return res.data
 }
-
-// ===== DEPRECATED: Verification endpoint kept for backward compatibility =====
-// NOTE: Email verification is currently bypassed on the backend.
-// This function may return errors if called, as accounts are auto-activated.
 export const verifyUserAPI = async (data) => {
   const res = await authorizeAxiosInstance.put(
     `${API_ROOT}/v1/users/verify`,
@@ -113,7 +109,6 @@ export const verifyUserAPI = async (data) => {
   )
   return res.data
 }
-// ===== END OF DEPRECATED FUNCTION =====
 
 export const refreshTokenAPI = async () => {
   const res = await authorizeAxiosInstance.get(
