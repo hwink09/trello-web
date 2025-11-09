@@ -5,10 +5,10 @@ import Boards from '~/pages/Boards'
 import NotFound from '~/pages/404/NotFound'
 import Auth from '~/pages/Auth/Auth'
 import AccountVerification from '~/pages/Auth/AccountVerification'
+import Settings from '~/pages/Settings/Settings'
 
 import { useSelector } from 'react-redux'
 import { selectCurrentUser } from '~/redux/user/userSlice'
-import Settings from '~/pages/Settings/Settings'
 
 /**
  * Giải pháp Clean Code trong việc xác định các route nào cần đăng nhập tài khoản xong thì mới cho truy cập

@@ -24,7 +24,7 @@ function Auth() {
         minHeight: '100vh',
         alignItems: 'center',
         justifyContent: 'flex-start',
-        background: 'url("src/assets/auth/login-register-bg.jpg")',
+        background: 'url("https://res.cloudinary.com/dwwmhkhgy/image/upload/v1762677562/card_covers/ts6wcf6zivgotfzw6i3s.jpg")',
         backgroundRepeat: 'no-repeat',
         backgroundSize: 'cover',
         backgroundPosition: 'center',
