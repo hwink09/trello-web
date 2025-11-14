@@ -1,4 +1,4 @@
-// Sample Eslint config for React project
+// Samplee Eslint config for React project
 module.exports = {
   env: { browser: true, es2020: true, node: true },
   extends: [
