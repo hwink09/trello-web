@@ -58,26 +58,26 @@ function AppBar() {
             >
               Trello
             </Typography>
-
-            <Box sx={{ display: { xs: 'none', md: 'flex' } }} gap={1}>
-              <WorkSpaces />
-              <Recent />
-              <Starred />
-              <Template />
-              <Button
-                sx={{
-                  color: 'white',
-                  border: 'none',
-                  '&:hover': { border: 'none' }
-                }}
-                variant="outlined"
-                startIcon={<LibraryAddIcon />}
-              >
-                Create
-              </Button>
-            </Box>
           </Box>
         </Link>
+
+        <Box sx={{ display: { xs: 'none', md: 'flex' } }} gap={1}>
+          <WorkSpaces />
+          <Recent />
+          <Starred />
+          <Template />
+          <Button
+            sx={{
+              color: 'white',
+              border: 'none',
+              '&:hover': { border: 'none' }
+            }}
+            variant="outlined"
+            startIcon={<LibraryAddIcon />}
+          >
+            Create
+          </Button>
+        </Box>
       </Box>
 
       <Box sx={{ display: 'flex', alignItems: 'center' }} gap={2}>

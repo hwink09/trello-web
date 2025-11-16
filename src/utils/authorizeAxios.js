@@ -6,7 +6,7 @@ import { logoutUserAPI } from '~/redux/user/userSlice'
 
 /**
  * không thể import ( store ) form '~/redux/store' theo cách thông thường ở đây
- * Giải pháp: Inject store: đây là kỹ thuật khi cần sử dụng biến redux store ở các file ngoài phạm vi component như gile authorize hiện tại
+ * Giải pháp: Inject store: đây là kỹ thuật khi cần sử dụng biến redux store ở các file ngoài phạm vi component như file authorize hiện tại
  * Hiểu đơn giản: Khi ứng dụng bắt đầu chạy, code sẽ chạy vào main.jsx đầu tiên, từ bên đó ta sẽ gọi hàm injectStore ngay lập tức để gán biến mainStore vào biến axiosReduxStore cục bộ trong file này
  */
 

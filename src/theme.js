@@ -76,7 +76,6 @@ const theme = extendTheme(
       }
     }
   }
-  // orthers
 )
 
 export default theme
