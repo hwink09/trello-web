@@ -96,7 +96,7 @@ function ListColumns({ columns }) {
         {columns?.map((column) => (
           <Column key={column._id} column={column} />
         ))}
-        {/* Box add new column CTA */}\
+        {/* Box add new column CTA */}
         {!openNewColumnForm ? (
           <Box
             onClick={toggleOpenNewColumnForm}
